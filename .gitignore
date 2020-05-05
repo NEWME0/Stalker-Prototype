@@ -1,0 +1,4 @@
+*.lnk
+resources/
+gamedata/
+__pycache__/

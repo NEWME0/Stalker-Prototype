@@ -1,0 +1,130 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+
+typedef struct 
+{
+    string value;
+} STRING <read=ReadSTRING>;
+
+string ReadSTRING(STRING &o)
+{
+    return o.value;
+};
+
+
+typedef struct CHUNK
+{
+    UINT32 type;
+    UINT32 size;
+
+    BYTE data[size];
+
+    if(type == 22)
+        Assert(false);
+};
+
+
+typedef struct OGF
+{
+    UINT32 type;
+    UINT32 size;
+
+    local long pos = FTell();
+
+    while(FTell() < pos + size)
+        CHUNK chunk;
+};
+
+
+typedef struct CHUNK_HEADER
+{
+    UINT32 type;     // 1
+    UINT32 size;     // 4
+
+    UINT16 version;  // 14
+    UINT16 quality;  // 1
+};
+
+
+typedef struct CHUNK_SHADERS
+{
+    UINT32 type;
+    UINT32 size;
+
+    UINT32 count;
+    STRING shader[count] <optimize=false>;
+};
+
+typedef struct CHUNK_VISUALS
+{
+    UINT32 type;
+    UINT32 size;
+
+    local long pos = FTell();
+
+    while(FTell() < pos + size)
+        OGF ogf;
+};
+
+
+typedef struct CHUNK_PORTALS
+{
+    UINT32 type;
+    UINT32 size;
+
+    BYTE data[size];
+};
+
+typedef struct CHUNK_DLIGHTS
+{
+    UINT32 type;
+    UINT32 size;
+
+    BYTE data[size];
+};
+
+typedef struct CHUNK_GLOWS
+{
+    UINT32 type;
+    UINT32 size;
+
+    BYTE data[size];
+};
+
+
+typedef struct CHUNK_SECTORS
+{
+    UINT32 type;
+    UINT32 size;
+
+    BYTE data[size];
+};
+
+
+
+
+while(!FEof())
+{
+	switch(ReadUInt())
+	{
+		case 1: CHUNK_HEADER  chunk_header;  break;
+		case 2: CHUNK_SHADERS chunk_shaders; break;
+		case 3: CHUNK_VISUALS chunk_visuals; break;
+		case 4: CHUNK_PORTALS chunk_portals; break;
+		case 6: CHUNK_DLIGHTS chunk_dlights; break;
+		case 7: CHUNK_GLOWS   chunk_glows;   break;
+		case 8: CHUNK_SECTORS chunk_sectors; break;
+		default: Assert(false);
+	}
+}
